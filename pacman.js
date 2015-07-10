@@ -23,6 +23,13 @@ var NONE        = 4,
 
 Pacman.FPS = 30;
 
+var DOT_COLOR = "#CC54B4";
+var SPEED = {
+    regular: 1,
+    hidden: 2,
+    vunerable: 0.5
+};
+
 Pacman.Ghost = function (game, map, colour) {
 
     var position  = null,
@@ -33,7 +40,7 @@ Pacman.Ghost = function (game, map, colour) {
     
     function getNewCoord(dir, current) { 
         
-        var speed  = isVunerable() ? 1 : isHidden() ? 4 : 2,
+        var speed  = isVunerable() ? SPEED.vunerable : isHidden() ? SPEED.hidden : SPEED.regular,
             xSpeed = (dir === LEFT && -speed || dir === RIGHT && speed || 0),
             ySpeed = (dir === DOWN && speed || dir === UP && -speed || 0);
     
@@ -344,8 +351,8 @@ Pacman.User = function (game, map) {
 
     function getNewCoord(dir, current) {   
         return {
-            "x": current.x + (dir === LEFT && -2 || dir === RIGHT && 2 || 0),
-            "y": current.y + (dir === DOWN && 2 || dir === UP    && -2 || 0)
+            "x": current.x + (dir === LEFT && -SPEED.regular || dir === RIGHT && SPEED.regular || 0),
+            "y": current.y + (dir === DOWN && SPEED.regular || dir === UP    && -SPEED.regular || 0)
         };
     };
 
@@ -615,7 +622,7 @@ Pacman.Map = function (size) {
 		            ctx.fillRect((j * blockSize), (i * blockSize), 
                                  blockSize, blockSize);
 
-                    ctx.fillStyle = "#FFF";
+                    ctx.fillStyle = DOT_COLOR;
                     ctx.arc((j * blockSize) + blockSize / 2,
                             (i * blockSize) + blockSize / 2,
                             Math.abs(5 - (pillSize/3)), 
@@ -662,7 +669,7 @@ Pacman.Map = function (size) {
                          blockSize, blockSize);
 
             if (layout === Pacman.BISCUIT) {
-                ctx.fillStyle = "#FFF";
+                ctx.fillStyle = DOT_COLOR;
 		        ctx.fillRect((x * blockSize) + (blockSize / 2.5), 
                              (y * blockSize) + (blockSize / 2.5), 
                              blockSize / 6, blockSize / 6);

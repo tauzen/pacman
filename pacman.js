@@ -450,6 +450,8 @@ Pacman.User = function (game, map) {
             
             if (block === Pacman.PILL) { 
                 game.eatenPill();
+            } else {
+                game.eatenBlock();
             }
         }   
                 
@@ -1018,6 +1020,10 @@ var PACMAN = (function () {
             ghosts[i].makeEatable(ctx);
         }        
     };
+
+    function eatenBlock() {
+        audio.play("eating2");
+    }
     
     function completedLevel() {
         setState(WAITING);
@@ -1051,7 +1057,8 @@ var PACMAN = (function () {
         map   = new Pacman.Map(blockSize);
         user  = new Pacman.User({ 
             "completedLevel" : completedLevel, 
-            "eatenPill"      : eatenPill 
+            "eatenPill"      : eatenPill,
+            "eatenBlock"     : eatenBlock
         }, map);
 
         for (i = 0, len = ghostSpecs.length; i < len; i += 1) {
@@ -1070,7 +1077,8 @@ var PACMAN = (function () {
             ["eatghost", root + "audio/eatghost." + extension],
             ["eatpill", root + "audio/eatpill." + extension],
             ["eating", root + "audio/eating.short." + extension],
-            ["eating2", root + "audio/eating.short." + extension]
+            ["eating2", root + "audio/eating." + extension],
+            ["siren", root + "audio/siren." + extension]
         ];
 
         load(audio_files, function() { loaded(); });
